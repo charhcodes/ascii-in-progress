@@ -9,6 +9,9 @@ import (
 
 var j = len(os.Args) - 1
 
+// OUTPUT FLAG
+var output = flag.String("output", "banner.txt", "output to banner.txt?") //when false, output does nothing
+
 // readFile checks os.Args for the font
 func readFile() string {
 	if string(os.Args[j]) == "thinkertoy" {
@@ -36,23 +39,17 @@ func readFile() string {
 // hence code sees our string input as os.Args[2] for all terminal arguments
 // how to check whether os.Args[1] is a flag?
 func outputChecker() bool {
-	if os.Args[1] == "--output=" {
-		return true
-	} else {
-		return false
-	}
+	return os.Args[1] == *output
 }
 
 func main() {
-	//OUTPUT FLAG
-	output := flag.String("output", "banner.txt", "output to banner.txt?") //when false, output does nothing
 	flag.Parse()
-
 	switch os.Args[j] {
 	//THINKERTOY
 	case "thinkertoy":
 		lines := strings.Split(string(readFile()), "\r\n") //thinkertoy NEEDS a carriage return
-		if outputChecker() {                               //when thinkertoy && output == true, strings input will be os.Args[2]
+		if outputChecker() {
+			fmt.Println("output=true") //when thinkertoy && output == true, strings input will be os.Args[2]
 			split := strings.Split(os.Args[2], `\r\n`)
 			for i := 0; i < len(split); i++ {
 				if string(split[i]) == "" {
@@ -67,6 +64,8 @@ func main() {
 				}
 			}
 		} else { //when thinkertoy && output == false, string input is os.Args[1]
+			//THIS ALWAYS RUNS
+			fmt.Println("output=false")
 			split := strings.Split(os.Args[2], `\r\n`)
 			//create banner.txt file
 			_, err := os.Create("banner.txt")
