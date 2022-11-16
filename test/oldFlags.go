@@ -29,24 +29,27 @@ func readFile() string {
 // code ignores checks to the output flag
 // hence code sees our string input as os.Args[2] for all terminal arguments
 // how to check whether os.Args[1] is a flag?
-func outputChecker() bool {
-	checker := false
-	for _, arg := range os.Args {
-		if arg == `--output="banner.txt"` {
-			checker = true
-			fmt.Println("checker working")
-		}
-	}
-	return checker
-}
+// func outputChecker() bool {
+// 	checker := false
+// 	for _, arg := range os.Args {
+// 		if arg == `--output="banner.txt"` {
+// 			checker = true
+// 			fmt.Println("checker working")
+// 		}
+// 	}
+// 	return checker
+// }
+
+//flag.args
 
 func main() {
 	flag.Parse()
+	fmt.Print(flag.Args())
 	switch os.Args[j] {
 	//THINKERTOY
 	case "thinkertoy":
 		lines := strings.Split(string(readFile()), "\r\n") //thinkertoy NEEDS a carriage return
-		if outputChecker() {
+		if *output == "" {
 			fmt.Println("output=true") //when thinkertoy && output == true, strings input will be os.Args[2]
 			split := strings.Split(os.Args[2], `\r\n`)
 			for i := 0; i < len(split); i++ {
@@ -61,7 +64,7 @@ func main() {
 					}
 				}
 			}
-		} else if !outputChecker() { //when thinkertoy && output == false, string input is os.Args[1]
+		} else { //when thinkertoy && output == false, string input is os.Args[1]
 			//THIS ALWAYS RUNS REGARDLESS OF TERMINAL INPUT
 			fmt.Println("output=false")
 			split := strings.Split(os.Args[1], `\r\n`)
