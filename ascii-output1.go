@@ -15,22 +15,13 @@ var output = flag.String("output", "banner.txt", "output to banner.txt?") //when
 // readFile checks os.Args for the font
 func readFile() string {
 	if string(os.Args[j]) == "thinkertoy" {
-		text, err := os.ReadFile("thinkertoy.txt")
-		if err != nil {
-			panic(err)
-		}
+		text, _ := os.ReadFile("thinkertoy.txt")
 		return string(text)
 	} else if string(os.Args[j]) == "shadow" {
-		text, err := os.ReadFile("shadow.txt")
-		if err != nil {
-			panic(err)
-		}
+		text, _ := os.ReadFile("shadow.txt")
 		return string(text)
 	} else {
-		text, err := os.ReadFile("standard.txt")
-		if err != nil {
-			panic(err)
-		}
+		text, _ := os.ReadFile("standard.txt")
 		return string(text)
 	}
 }
@@ -39,7 +30,14 @@ func readFile() string {
 // hence code sees our string input as os.Args[2] for all terminal arguments
 // how to check whether os.Args[1] is a flag?
 func outputChecker() bool {
-	return os.Args[1] == *output
+	checker := false
+	for _, arg := range os.Args {
+		if arg == `--output="banner.txt"` {
+			checker = true
+			fmt.Println("checker working")
+		}
+	}
+	return checker
 }
 
 func main() {
@@ -63,10 +61,10 @@ func main() {
 					}
 				}
 			}
-		} else { //when thinkertoy && output == false, string input is os.Args[1]
-			//THIS ALWAYS RUNS
+		} else if !outputChecker() { //when thinkertoy && output == false, string input is os.Args[1]
+			//THIS ALWAYS RUNS REGARDLESS OF TERMINAL INPUT
 			fmt.Println("output=false")
-			split := strings.Split(os.Args[2], `\r\n`)
+			split := strings.Split(os.Args[1], `\r\n`)
 			//create banner.txt file
 			_, err := os.Create("banner.txt")
 			if err != nil {
