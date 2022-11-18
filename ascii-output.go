@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-var j = len(os.Args) - 1 //j = font
+var j = len(os.Args) - 1 //j = font, always last value
 var r = "\n"
 var flag = strings.Split(os.Args[1], "=") //split flag into two (output and file name)
 
@@ -14,7 +14,7 @@ var flag = strings.Split(os.Args[1], "=") //split flag into two (output and file
 func readFile() string {
 	if string(os.Args[j]) == "thinkertoy" {
 		text, _ := os.ReadFile("thinkertoy.txt")
-		r = "\r\n"
+		r = "\r\n" //thinkertoy font requires a carriage return
 		return string(text)
 	} else if string(os.Args[j]) == "shadow" {
 		text, _ := os.ReadFile("shadow.txt")
@@ -45,7 +45,7 @@ func main() {
 					fmt.Print(r)
 					s += r
 				}
-				err := os.WriteFile(flag[1], []byte(s), 0644)
+				err := os.WriteFile(flag[1], []byte(s), 0644) //create and write file
 				if err != nil {
 					panic(err)
 				}
